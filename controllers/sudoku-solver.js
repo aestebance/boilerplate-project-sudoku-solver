@@ -1,6 +1,18 @@
 class SudokuSolver {
 
   validate(puzzleString) {
+    if (/^[0-9.]+$/.exec(puzzleString) === null) {
+      return({
+        error: 'Invalid characters in puzzle'
+      });
+    }
+
+    if (puzzleString.length > 81 || puzzleString.length < 81) {
+      return ({
+        error: 'Expected puzzle to be 81 characters long'
+      })
+    }
+    return true;
   }
 
   checkRowPlacement(puzzleString, row, column, value) {
@@ -16,7 +28,7 @@ class SudokuSolver {
   }
 
   solve(puzzleString) {
-    
+
   }
 }
 
