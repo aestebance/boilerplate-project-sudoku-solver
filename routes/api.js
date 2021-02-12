@@ -33,8 +33,30 @@ app.route('/api/check')
             });
         }
 
+        const validRow = solver.checkRowPlacement(puzzle, row, col, value);
+        const validCol = solver.checkColPlacement(puzzle, row, col, value);
+        const validReg = solver.checkRegionPlacement(puzzle, row, col, value);
+
+        if (validRow && validCol && validReg) {
+            return res.json({
+                valid: true
+            });
+        }
+
+        const conflicts = [];
+        if (!validRow) {
+            conflicts.push("row");
+        }
+        if (!validCol) {
+            conflicts.push("column");
+        }
+        if (!validReg) {
+            conflicts.push("region");
+        }
+
         return res.json({
-            result: "all correct"
+            valid: false,
+            conflict: conflicts
         });
     });
 

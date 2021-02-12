@@ -15,18 +15,88 @@ class SudokuSolver {
         return true;
     }
 
-    checkRowPlacement(puzzleString, row, column, value) {
+    rowToNumber(row) {
+        switch(row.toUpperCase()) {
+            case "A":
+                return 1;
+                break;
+            case "B":
+                return 2;
+                break;
+            case "C":
+                return 3;
+                break;
+            case "D":
+                return 4;
+                break;
+            case "E":
+                return 5;
+                break;
+            case "F":
+                return 6;
+                break;
+            case "G":
+                return 7;
+                break;
+            case "H":
+                return 8;
+                break;
+            case "I":
+                return 9;
+                break;
+            default:
+                return false;
+        }
+    }
 
+    checkRowPlacement(puzzleString, row, column, value) {
+        const grid = this.transform(puzzleString);
+        row = this.rowToNumber(row);
+        if (grid[row -1][column -1] !== 0) {
+            return false;
+        }
+        for (let i = 0; i<9; i++) {
+            if (grid[row -1][i] === parseInt(value)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     checkColPlacement(puzzleString, row, column, value) {
-
+        const grid = this.transform(puzzleString);
+        row = this.rowToNumber(row);
+        if (grid[row -1][column -1] !== 0) {
+            return false;
+        }
+        for (let i = 0; i<9; i++) {
+            if (grid[i][column -1] === parseInt(value)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     checkRegionPlacement(puzzleString, row, column, value) {
+        const grid = this.transform(puzzleString);
+        row = this.rowToNumber(row);
+        if (grid[row -1][column -1] !== 0) {
+            return false;
+        }
 
+        let startRow = row - (row % 3);
+        let startCol = column - (column % 3);
+
+        for (let i = 0; i<3; i++) {
+            for (let j = 0; j<3; j++) {
+                if (grid[i + startRow][j + startCol] === parseInt(value))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
-
     solveSuduko(grid, row, col) {
         if (row === 9 - 1 && col === 9)
             return grid;
@@ -98,7 +168,6 @@ class SudokuSolver {
             grid[row][col] = puzzleString[i] === "." ? 0 : +puzzleString[i];
             col++;
         }
-        console.log(grid);
         return grid;
     }
 
